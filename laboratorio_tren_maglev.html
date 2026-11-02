@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio digital · Tren MAGLEV</title>
+<style>
+:root{color-scheme:dark;--bg:#101c2b;--panel:#182839;--line:#344b5e;--text:#eef5f8;--muted:#afc0cc;--accent:#59c5f4}
+*{box-sizing:border-box}body{margin:0;padding:22px;font:16px system-ui,Arial;background:#0c1723;color:var(--text)}
+main{max-width:950px;margin:auto}.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--muted)}h1{font-size:clamp(23px,4vw,32px);margin:5px 0 18px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:16px;margin:14px 0}
+svg{width:100%;height:auto;display:block;border-radius:10px}.muted{color:var(--muted)}.small{font-size:13px}
+.reading{font-size:34px;font-weight:750}.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+input[type=range]{width:100%;accent-color:var(--accent);margin:14px 0}
+button{background:#21394d;color:var(--text);border:1px solid #49647a;border-radius:9px;padding:10px 15px;font-weight:650;cursor:pointer;margin:3px}
+button:hover,button:focus{border-color:var(--accent);outline:none}.presets{display:flex;flex-wrap:wrap;gap:4px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.stat{background:#122233;border-radius:10px;padding:12px}
+@media(max-width:600px){body{padding:12px}.panel{padding:12px}.grid{grid-template-columns:1fr}.reading{font-size:29px}}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">SIMULACIÓN EXPERIMENTAL · TRANSPORTE MAGNÉTICO</div>
+<h1>Tren de levitación magnética (MAGLEV)</h1>
+<section class="panel">
+<div class="row"><b>Vista lateral e inferior del tren</b><span class="small muted">Animación en tiempo real</span></div>
+<svg viewBox="0 0 720 390" role="img" aria-label="Tren MAGLEV sobre vías de aluminio y bobinas superconductoras">
+<defs>
+<linearGradient id="trainBody" x2="0" y2="1"><stop stop-color="#e8f2f8"/><stop offset=".55" stop-color="#91a9ba"/><stop offset="1" stop-color="#425b70"/></linearGradient>
+<linearGradient id="alu" x2="0" y2="1"><stop stop-color="#edf3f5"/><stop offset="1" stop-color="#71818c"/></linearGradient>
+<linearGradient id="coil" x2="0" y2="1"><stop stop-color="#ffca69"/><stop offset="1" stop-color="#a94b19"/></linearGradient>
+</defs>
+<rect width="720" height="390" rx="12" fill="#101c2b"/>
+<g opacity=".35" stroke="#557084"><path d="M20 0V275M100 0V275M180 0V275M260 0V275M340 0V275M420 0V275M500 0V275M580 0V275M660 0V275"/></g>
+<g id="train">
+<path d="M75 145Q85 103 145 99H525Q580 103 631 151L650 187V204H75Z" fill="url(#trainBody)" stroke="#dce8ef" stroke-width="2"/>
+<path d="M93 145Q108 113 150 113H526Q564 117 606 153Z" fill="#253e53"/>
+<g fill="#9bd8f0" stroke="#d8f2ff" stroke-width="2"><path d="M132 122H188V151H115Z"/><path d="M201 122H265V151H201Z"/><path d="M278 122H342V151H278Z"/><path d="M355 122H419V151H355Z"/><path d="M432 122H496V151H432Z"/><path d="M509 123H553Q576 128 591 151H509Z"/></g>
+<path d="M76 190H650" stroke="#e5f3fa" stroke-width="5"/>
+</g>
+<g fill="url(#alu)" stroke="#e7edf0"><path d="M35 246H685V261H35Z"/><path d="M35 316H685V331H35Z"/></g>
+<g id="coils" stroke="url(#coil)" stroke-width="5" fill="none">
+<path d="M65 262v34q0 9 10 9t10-9v-34M145 262v34q0 9 10 9t10-9v-34M225 262v34q0 9 10 9t10-9v-34M305 262v34q0 9 10 9t10-9v-34M385 262v34q0 9 10 9t10-9v-34M465 262v34q0 9 10 9t10-9v-34M545 262v34q0 9 10 9t10-9v-34M625 262v34q0 9 10 9t10-9v-34"/>
+</g>
+<path d="M65 282H655" stroke="#53c7ff" stroke-width="2.5" stroke-dasharray="6 6"/>
+<g id="particles" fill="#54d5ff"><circle cx="90" cy="282" r="4"/><circle cx="250" cy="282" r="4"/><circle cx="410" cy="282" r="4"/><circle cx="570" cy="282" r="4"/></g>
+<g font-size="13" fill="#fff"><path d="M560 90L590 48H684M620 252L665 225H710M390 305L415 352H540M110 279L85 348H15" stroke="#fff" fill="none"/><text x="565" y="34">Tren MAGLEV</text><text x="554" y="218">Vías de aluminio</text><text x="420" y="371">Bobinas superconductoras</text><text x="15" y="367" fill="#53c7ff">Corriente eléctrica</text><text x="15" y="22" fill="#b6c8d5">ESQUEMA DE CORTE LATERAL</text></g>
+</svg>
+<div class="small muted">Esquema ilustrativo: bobinas superconductoras debajo del tren y vías de aluminio identificadas.</div>
+</section>
+<section class="panel">
+<div class="row"><div><div class="small muted">VELOCIDAD DEL TREN</div><div class="reading" id="read">300 <span style="font-size:16px">km/h</span></div></div><div><div class="small muted">Estado</div><b id="status">En movimiento</b></div></div>
+<input id="speed" type="range" min="0" max="1000" step="10" value="300" aria-label="Velocidad del tren"/>
+<div class="row small muted"><span>0 km/h</span><span>500 km/h</span><span>1,000 km/h</span></div>
+<div style="margin-top:12px"><button id="start">▶ Iniciar</button><button id="pause">Ⅱ Pausar</button><button id="reset">↺ Reiniciar</button></div>
+<div class="presets" style="margin-top:9px"><button data-speed="100">100 km/h</button><button data-speed="300">300 km/h</button><button data-speed="500">500 km/h</button><button data-speed="800">800 km/h</button><button data-speed="1000">1,000 km/h</button></div>
+<p class="small muted" id="announce" aria-live="polite">Simulación lista.</p>
+</section>
+<div class="grid"><section class="stat"><b>Levitación</b><p class="small muted">El tren se mantiene elevado mediante fuerzas magnéticas, sin apoyarse de la forma convencional sobre ruedas.</p></section><section class="stat"><b>Propulsión</b><p class="small muted">Campos magnéticos variables permiten impulsar y guiar el tren a lo largo de la vía.</p></section></div>
+<section class="panel small"><b>¿Qué representa el experimento?</b><p class="muted">Las bobinas superconductoras pueden generar campos magnéticos intensos. En ciertos sistemas MAGLEV, estos campos interactúan con elementos conductores y sistemas electromagnéticos de la vía para producir levitación, guiado y propulsión. La animación es conceptual y no representa un diseño constructivo específico.</p></section>
+</main>
+<script>
+(()=>{const $=id=>document.getElementById(id),slider=$('speed'),train=$('train'),dots=[...document.querySelectorAll('#particles circle')];let speed=300,running=true,last=0,offset=0,raf;
+function update(){ $('read').innerHTML=speed+' <span style="font-size:16px">km/h</span>';slider.value=speed;$('status').textContent=running?'En movimiento':'Pausado';}
+function frame(t){if(!last)last=t;let dt=Math.min((t-last)/1000,.05);last=t;if(running&&speed>0){offset=(offset+speed*dt*.16)%720;train.setAttribute('transform',`translate(${offset-100} 0)`);dots.forEach((p,i)=>p.setAttribute('cx',((i*160+offset*1.7)%680)+20));}raf=requestAnimationFrame(frame);}
+slider.addEventListener('input',()=>{speed=+slider.value;update();});
+$('start').onclick=()=>{running=true;update();$('announce').textContent='Tren en movimiento a '+speed+' km/h.'};
+$('pause').onclick=()=>{running=false;update();$('announce').textContent='Movimiento pausado.'};
+$('reset').onclick=()=>{speed=0;offset=0;running=false;train.setAttribute('transform','translate(0 0)');update();$('announce').textContent='Simulación reiniciada.'};
+document.querySelectorAll('[data-speed]').forEach(b=>b.onclick=()=>{speed=+b.dataset.speed;running=true;update();$('announce').textContent='Velocidad seleccionada: '+speed+' km/h.'});
+update();raf=requestAnimationFrame(frame);
+})();
+</script></body></html>
